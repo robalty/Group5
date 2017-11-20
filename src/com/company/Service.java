@@ -163,7 +163,7 @@ public class Service extends Entry {
 
 
     //Returns current object’s next
-    public Entry goNext() {
+    public Service goNext() {
         return this.next;
     }
 
