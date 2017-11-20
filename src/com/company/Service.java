@@ -193,8 +193,7 @@ public class Service extends Entry {
 
         return success;
     }
-
-
+//Some stuff
 
     //Copies argument object's idNum, name and fee
     //Does not change left, right, next values
@@ -215,8 +214,6 @@ public class Service extends Entry {
 
         return null;
     }
-
-
 
     public static void main(String[] args) {
 
