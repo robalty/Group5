@@ -149,4 +149,6 @@ public class ServiceProvided extends Service {
 
         return success;
     }
+
+    public Date get_service_date() {return serviceDate;}
 }
