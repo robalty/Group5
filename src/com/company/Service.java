@@ -187,9 +187,40 @@ public class Service extends Entry {
 
 
 
-    public int loadFromFile(Scanner fStream)
+    //Reads a single line from file using argument Scanner object, and copies
+    //data into current object's fields
+    //Returns 0 (Failure; Null argument)
+    //       -1 (Failure; Unable to read in data for all fields)
+    //        1 (Success)
+    public int loadFromFile(Scanner fileReader) throws NumberFormatException
     {
-        int success = 0;
+        int success = 0;    //flag if a single line has been read from file
+                            //and data copied into idNum, name and fee fields
+                            //of current object
+
+        if (fileReader != null)
+        {
+            if (fileReader.hasNext())
+            {
+                //Read a line from file
+                String data = fileReader.nextLine();
+
+                //Split line using '|' as delimiter
+                String [] fields = data.split("\\|", 3);
+
+                //Copy fields into current object and flag success
+                if (fields.length == 3) {
+                    this.idNum = Integer.parseInt(fields[0]);
+                    this.name = fields[1];
+                    this.fee = Double.parseDouble(fields[2]);
+
+                    success = 1;
+                }
+
+                else
+                    success = -1;
+            }
+        }
 
         return success;
     }

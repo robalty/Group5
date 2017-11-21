@@ -159,11 +159,12 @@ public abstract class Entry extends Util{
 
 
     //ABSTRACT method to be implemented in derived classes
-    //Appends data to argument File in report format (depending upon derived class type)
+    //Reads a single line from file using argument Scanner object, and copies
+    //data into current object's fields
     //Returns 0 (Failure; Null argument)
     //       -1 (Failure; Unable to read in data for all fields)
     //        1 (Success)
-    abstract public int loadFromFile(Scanner fStream);
+    abstract public int loadFromFile(Scanner fileReader);
 
 
 
