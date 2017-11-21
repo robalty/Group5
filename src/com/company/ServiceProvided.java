@@ -94,25 +94,33 @@ public class ServiceProvided extends Service {
 
 
     //Displays current date, service date, service code, name, fee,
-    //member ID and name, provider ID and name (each on a new line, indented)
+    //member ID and name, provider ID and name, comments (each on a new line, indented)
     //No return value
     public void display()
     {
 
-        //Print date MM/dd/yyyy and time HH:mm:ss for current date
+        //Display date MM/dd/yyyy and time HH:mm:ss for current date
         SimpleDateFormat currentDateFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         System.out.println("\tCurrent date and time: " + currentDateFormatter.format(this.currentDateTime));
 
-        //Print only mm/dd/yyyy for service date
+        //Display only mm/dd/yyyy for service date
         SimpleDateFormat serviceDateFormatter = new SimpleDateFormat("MM/dd/yyyy");
         System.out.println("\tService date: " + serviceDateFormatter.format(this.serviceDate));
 
+        //Display service code, name and fee
         super.display();
 
+        //Display member and provider details
         System.out.println("\tMember ID: " + this.memberID);
         System.out.println("\tMember name: " + this.memberName);
         System.out.println("\tProvider ID: " + this.providerID);
         System.out.println("\tProvider name: " + this.providerName);
+
+        //Display comments if any
+        if (this.comments != null)
+            System.out.println("\tComments: " + this.comments);
+        else
+            System.out.println("\tComments: None");
     }
 
 
