@@ -9,6 +9,86 @@ import static org.junit.Assert.*;
 
 public class ServiceProvidedTest {
     @Test
+    public void compareByServiceDate_usingArgumentObject() throws Exception
+    {
+        //Arrange
+        Service testService = new Service(123456, "Current", 123.7);
+        String earlierDate = "09/1/2016";
+        String laterDate = "09/01/2018";
+        String sameDate = "09/01/2017";
+        String nullString = null;
+        try {
+            ServiceProvided testProvided = new ServiceProvided(testService, "09/1/2017",
+                    987654321, "Member name",
+                    987654321, "Provider name",
+                    null);
+            ServiceProvided earlier = new ServiceProvided(testService, earlierDate,
+                    987654321, "Member name",
+                    987654321, "Provider name",
+                    null);
+            ServiceProvided later = new ServiceProvided(testService, laterDate,
+                    987654321, "Member name",
+                    987654321, "Provider name",
+                    null);
+            ServiceProvided same = new ServiceProvided(testService, sameDate,
+                    987654321, "Member name",
+                    987654321, "Provider name",
+                    null);
+
+            //Act
+            int result1 = testProvided.compareByServiceDate(earlier);
+            int result2 = testProvided.compareByServiceDate(later);
+            int result3 = testProvided.compareByServiceDate(same);
+            int result4 = testProvided.compareByServiceDate(nullString);
+
+            //Assert
+            assertEquals(result1, 1);
+            assertEquals(result2, -1);
+            assertEquals(result3, 0);
+            assertEquals(result4, -2);
+        }
+
+        catch (ParseException e)
+        {
+            System.out.println("Incorrect date format");
+        }
+    }
+
+    @Test
+    public void compareByServiceDate_usingArgumentString() throws Exception
+    {
+        //Arrange
+        Service testService = new Service(123456, "Current", 123.7);
+        String earlierDate = "08/1/2017";
+        String laterDate = "10/1/2017";
+        String sameDate = "09/01/2017";
+        String nullString = null;
+        try {
+            ServiceProvided testProvided = new ServiceProvided(testService, "09/1/2017",
+                    987654321, "Member name",
+                    987654321, "Provider name",
+                    null);
+
+            //Act
+            int result1 = testProvided.compareByServiceDate(earlierDate);
+            int result2 = testProvided.compareByServiceDate(laterDate);
+            int result3 = testProvided.compareByServiceDate("09/1/2017");
+            int result4 = testProvided.compareByServiceDate(nullString);
+
+            //Assert
+            assertEquals(result1, 1);
+            assertEquals(result2, -1);
+            assertEquals(result3, 0);
+            assertEquals(result4, -2);
+        }
+
+        catch (ParseException e)
+        {
+            System.out.println("Incorrect date format");
+        }
+    }
+
+    @Test
     public void display() throws Exception {
         //Arrange
         Service testService = new Service(123456, "Current", 123.7);

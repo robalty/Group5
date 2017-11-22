@@ -125,6 +125,54 @@ public class ServiceProvided extends Service {
 
 
 
+    //Compares current object's serviceDate with that of argument
+    //Returns -2 if argument is null.
+    //Returns -1 if current object's serviceDate is before,
+    //         0 if equal to, and
+    //         1 if after that of argument
+    public int compareByServiceDate(ServiceProvided toCompare)
+    {
+        //null argument
+        if (toCompare == null)
+            return -2;
+
+        if (this.serviceDate.before(toCompare.serviceDate))
+            return -1;
+
+        if (this.serviceDate.after(toCompare.serviceDate))
+            return 1;
+
+        return 0;
+    }
+
+
+
+    //Compares current object's serviceDate with string argument (MM/DD/YYYY format)
+    //Returns -2 if argument is null.
+    //Returns -1 if current object's serviceDate is before,
+    //         0 if equal to, and
+    //         1 if after argument date value
+    public int compareByServiceDate(String toCompare) throws ParseException
+    {
+        //null argument
+        if (toCompare == null)
+            return -2;
+
+        //convert argument string to date
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        Date dateToCompare = new Date (formatter.parse(toCompare).getTime());
+
+        if (this.serviceDate.before(dateToCompare))
+            return -1;
+
+        if (this.serviceDate.after(dateToCompare))
+            return 1;
+
+        return 0;
+    }
+
+
+
     public int writeToFile(File writeFile)
     {
         int success = 0;
