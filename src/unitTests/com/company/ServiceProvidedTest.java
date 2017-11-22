@@ -1,5 +1,5 @@
 package com.company;
-
+/*
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -157,3 +157,4 @@ public class ServiceProvidedTest {
     }
 
 }
+*/
