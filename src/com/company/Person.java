@@ -16,7 +16,7 @@ abstract public class Person extends Entry {
     protected int []phone;
     protected Scanner userInput;
 
-    public Person(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String email, int [] phone) {
+    public Person(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String email, String phone) throws Exception {
         //add exception handling
         super(idNum);
         this.firstName = new String(firstName);
@@ -26,7 +26,20 @@ abstract public class Person extends Entry {
         this.state = new String(state);
         this.zip = zip;
         this.email = new String(email);
-        this.phone = phone;
+        this.phone = new int[10];
+        String temp = new String(phone);
+        char [] tempArray = temp.toCharArray();
+        int length = temp.length();
+        int j = 0;
+        for (int i = 0; i < length; ++i) {
+            int num = Character.getNumericValue(tempArray[i]);
+            if (num!=-1 && j<10) {
+                this.phone[j] = num;
+                ++j;
+            }
+        }
+        if (j < 10)
+            throw new Exception();
         this.userInput = new Scanner(System.in);
     }
 
@@ -165,12 +178,39 @@ abstract public class Person extends Entry {
     public int writeToFile(File aFile) {
         try {
             FileWriter aFileWriter = new FileWriter(aFile, true);
+
             aFileWriter.append(this.firstName);
+            aFileWriter.append(";");
+
             aFileWriter.append(this.lastName);
-            //add the rest of the info and formatting
+            aFileWriter.append(";");
+
+            aFileWriter.append(this.streetAddress);
+            aFileWriter.append(";");
+
+            aFileWriter.append(this.city);
+            aFileWriter.append(";");
+
+            aFileWriter.append(this.state);
+            aFileWriter.append(";");
+
+            String zipString = Integer.toString(this.zip);
+            aFileWriter.append(zipString);
+            aFileWriter.append(";");
+
+            aFileWriter.append(this.email);
+            aFileWriter.append(";");
+
+            String temp = "";
+            for (int i = 0; i < 10; ++i)
+                temp = String.join("", temp, Integer.toString(this.phone[i]));
+            aFileWriter.append(temp);
+            aFileWriter.append(";");
+
             aFileWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            return -1;
         }
         return 1;
     }
