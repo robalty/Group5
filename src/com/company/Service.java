@@ -1,4 +1,6 @@
+//Author: Meera Murali
 package com.company;
+
 
 import java.io.File;
 import java.util.Scanner;
@@ -169,6 +171,10 @@ public class Service extends Entry {
 
 
 
+    //Appends data to argument File
+    //Returns 0 (Failure; Null argument)
+    //       -1 (Failure; File not found)
+    //        1 (Success)
     public int writeToFile(File writeFile)
     {
         int success = 0;
