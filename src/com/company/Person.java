@@ -12,11 +12,10 @@ abstract public class Person extends Entry {
     protected String city;
     protected String state;
     protected int zip;
-    protected String email;
     protected int []phone;
     protected Scanner userInput;
 
-    public Person(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String email, String phone) throws Exception {
+    public Person(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String phone) throws Exception {
         //add exception handling
         super(idNum);
         this.firstName = new String(firstName);
@@ -25,7 +24,6 @@ abstract public class Person extends Entry {
         this.city = new String(city);
         this.state = new String(state);
         this.zip = zip;
-        this.email = new String(email);
         this.phone = new int[10];
         String temp = new String(phone);
         char [] tempArray = temp.toCharArray();
@@ -44,26 +42,25 @@ abstract public class Person extends Entry {
     }
 
     public Person() {
+        super();
         this.firstName = null;
         this.lastName = null;
         this.streetAddress = null;
         this.city = null;
         this.state = null;
         this.zip = 0;
-        this.email = null;
         this.phone = null;
         this.userInput = new Scanner(System.in);
     }
 
     public void display() {
-        if (this.firstName==null || this.lastName==null || this.streetAddress==null || this.city==null || this.state==null || this.zip==0 || this.email==null || this.phone==null) {
+        if (this.firstName==null || this.lastName==null || this.streetAddress==null || this.city==null || this.state==null || this.zip==0 || this.phone==null) {
             System.out.println("Missing info for person");
             return;
         }
         System.out.println("First Name: " + this.firstName);
         System.out.println("Last Name: " + this.lastName);
         System.out.println("Address: " + this.streetAddress + ", " + this.city + ", " + this.state + ", " + this.zip);
-        System.out.println("Email: " + this.email);
         System.out.print("Phone: ");
         for (int i = 0; i < 10; ++i) {
             System.out.print(this.phone[i]);
@@ -146,17 +143,6 @@ abstract public class Person extends Entry {
             if (0==response.compareToIgnoreCase("Yes"))
                 this.zip = tempZip;
         }
-        System.out.print("Do you want to change the email? Yes or No:");
-        response = this.userInput.next();
-        if (0==response.compareToIgnoreCase("Yes")) {
-            System.out.print("Enter the new email: ");
-            userInput.nextLine();
-            temp = this.userInput.nextLine();
-            System.out.print("Do you want to change the email to: " + temp + "? Yes or No:");
-            response = this.userInput.next();
-            if (0==response.compareToIgnoreCase("Yes"))
-                this.email = temp;
-        }
         System.out.print("Do you want to change the phone number? Yes or No:");
         response = this.userInput.next();
         if (0==response.compareToIgnoreCase("Yes")) {
@@ -202,9 +188,6 @@ abstract public class Person extends Entry {
             aFileWriter.append(zipString);
             aFileWriter.append(";");
 
-            aFileWriter.append(this.email);
-            aFileWriter.append(";");
-
             phoneString = "";
             for (int i = 0; i < 10; ++i)
                 phoneString = String.join("", phoneString, Integer.toString(this.phone[i]));
@@ -232,7 +215,6 @@ abstract public class Person extends Entry {
         this.city = new String(fileInput.next());
         this.state = new String(fileInput.next());
         this.zip = fileInput.nextInt();
-        this.email = new String(fileInput.next());
         this.phone = new int[10];
         String temp = new String(fileInput.next());
         char [] tempArray = temp.toCharArray();

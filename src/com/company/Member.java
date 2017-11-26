@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Member extends Person {
     protected List_service serviceProvidedList;
 
-    public Member(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String email, String phone) throws Exception {
-        super(idNum, firstName, lastName, streetAddress, city, state, zip, email, phone);
+    public Member(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String phone) throws Exception {
+        super(idNum, firstName, lastName, streetAddress, city, state, zip, phone);
         this.serviceProvidedList = new List_service(List_Service_Type.all_services_provided_provider);
     }
 
@@ -62,7 +62,7 @@ public class Member extends Person {
         if (result==1) {
             serviceProvidedFilename = fileInput.next();
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            count = this.serviceProvidedList.load_data_from_text_file(serviceProvidedFile);
+            count = this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
             return count;
         }
         else

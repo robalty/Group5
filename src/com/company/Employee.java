@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Employee extends Person {
     protected char jobTitleCode;
 
-    public Employee(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String email, String phone, char jobTitleCode) throws Exception {
-        super(idNum, firstName, lastName, streetAddress, city, state, zip, email, phone);
+    public Employee(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String phone, char jobTitleCode) throws Exception {
+        super(idNum, firstName, lastName, streetAddress, city, state, zip, phone);
         this.jobTitleCode = jobTitleCode;
     }
 
