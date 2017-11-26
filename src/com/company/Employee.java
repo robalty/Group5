@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Employee extends Person {
     protected char jobTitleCode;
 
-    public Employee(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String phone, char jobTitleCode) throws Exception {
-        super(idNum, firstName, lastName, streetAddress, city, state, zip, phone);
+    public Employee(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, char jobTitleCode) throws Exception {
+        super(idNum, firstName, lastName, streetAddress, city, state, zip);
         this.jobTitleCode = jobTitleCode;
     }
 
@@ -70,6 +70,7 @@ public class Employee extends Person {
             jobTitleString = new String(fileInput.next());
             //add error handling
             this.jobTitleCode = jobTitleString.charAt(0);
+            fileInput.nextLine();
             return 1;
         }
         else

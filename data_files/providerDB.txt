@@ -1,3 +1,3 @@
-170000001;First Name;Last Name;Street Address;City;State;97006;1231231234;S170000001.txt;P170000001.txt;
-170000002;First Name;Last Name;Street Address;City;State;97006;1231231234;S170000002.txt;P170000002.txt;
-170000003;First Name;Last Name;Street Address;City;State;97006;1231231234;S170000003.txt;P170000003.txt;
+170000001;First Name;Last Name;Street Address;City;State;97006;S170000001.txt;P170000001.txt;
+170000002;First Name;Last Name;Street Address;City;State;97006;S170000002.txt;P170000002.txt;
+170000003;First Name;Last Name;Street Address;City;State;97006;S170000003.txt;P170000003.txt;

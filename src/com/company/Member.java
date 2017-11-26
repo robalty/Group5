@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Member extends Person {
     protected List_service serviceProvidedList;
 
-    public Member(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String phone) throws Exception {
-        super(idNum, firstName, lastName, streetAddress, city, state, zip, phone);
+    public Member(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip) throws Exception {
+        super(idNum, firstName, lastName, streetAddress, city, state, zip);
         this.serviceProvidedList = new List_service(List_Service_Type.all_services_provided_provider);
     }
 
@@ -35,7 +35,7 @@ public class Member extends Person {
             idString = Integer.toString(this.idNum);
             serviceProvidedFilename = String.join("", "P", idString, ".txt");
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
+//            result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
             try {
                 aFileWriter = new FileWriter(aFile, true);
                 aFileWriter.append("\n");
@@ -62,7 +62,10 @@ public class Member extends Person {
         if (result==1) {
             serviceProvidedFilename = fileInput.next();
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            count = this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+//            count = this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+
+            fileInput.nextLine();
+
             return count;
         }
         else

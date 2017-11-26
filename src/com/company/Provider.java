@@ -9,8 +9,8 @@ public class Provider extends Person {
     protected List_service serviceList;
     protected List_service serviceProvidedList;
 
-    public Provider(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String phone) throws Exception {
-        super(idNum, firstName, lastName, streetAddress, city, state, zip, phone);
+    public Provider(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip) throws Exception {
+        super(idNum, firstName, lastName, streetAddress, city, state, zip);
         this.serviceList = new List_service(List_Service_Type.all_services_available_provider);
         this.serviceProvidedList = new List_service(List_Service_Type.all_services_provided_provider);
     }
@@ -41,11 +41,11 @@ public class Provider extends Person {
 
             serviceFilename = String.join("", "S", idString, ".txt");
             serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
-            result += this.serviceList.write_Text_file(serviceFile);
+//            result += this.serviceList.write_Text_file(serviceFile);
 
             serviceProvidedFilename = String.join("", "P", idString, ".txt");
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
+//            result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
 
             try {
                 aFileWriter = new FileWriter(aFile, true);
@@ -77,11 +77,13 @@ public class Provider extends Person {
 
             serviceFilename = fileInput.next();
             serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
-            count += this.serviceList.load_Services_from_text_file(serviceFile);
+//            count += this.serviceList.load_Services_from_text_file(serviceFile);
 
             serviceProvidedFilename = fileInput.next();
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            count += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+//            count += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+
+            fileInput.nextLine();
 
             return count;
         }
