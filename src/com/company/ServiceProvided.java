@@ -1,7 +1,10 @@
 //Author: Meera Murali
 package com.company;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import  java.util.*;
@@ -94,9 +97,13 @@ public class ServiceProvided extends Service {
     }
 
 
+
+
+
     //Displays current date, service date, service code, name, fee,
     //member ID and name, provider ID and name, comments (each on a new line, indented)
     //No return value
+    @Override
     public void display()
     {
 
@@ -174,15 +181,94 @@ public class ServiceProvided extends Service {
 
 
 
+    //Appends data to argument File
+    //Returns 0 (Failure; Null argument)
+    //       -1 (Failure; IO Exception)
+    //       -2 (Failure; Unable to close writer)
+    //        1 (Success)
+    @Override
     public int writeToFile(File writeFile)
     {
         int success = 0;
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
+        //null argument
+        if (writeFile == null)
+            return 0;
+
+        try {
+            fileWriter = new FileWriter(writeFile, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            //Append idNum
+            bufferedWriter.write(Integer.toString(this.idNum));
+            bufferedWriter.write("|");
+
+            //Append name
+            bufferedWriter.write(this.name);
+            bufferedWriter.write("|");
+
+            //Append fee
+            bufferedWriter.write(Double.toString(this.fee));
+            bufferedWriter.write("|");
+
+            //Append current date
+            SimpleDateFormat currentDateFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            bufferedWriter.write(currentDateFormatter.format(this.currentDateTime));
+            bufferedWriter.write("|");
+
+            //Append service date
+            SimpleDateFormat serviceDateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+            bufferedWriter.write(serviceDateFormatter.format(this.serviceDate));
+            bufferedWriter.write("|");
+
+            //Append Member ID and name
+            bufferedWriter.write(Integer.toString(this.memberID));
+            bufferedWriter.write("|");
+            bufferedWriter.write(this.memberName);
+            bufferedWriter.write("|");
+
+            //Append Provider ID and name
+            bufferedWriter.write(Integer.toString(this.providerID));
+            bufferedWriter.write("|");
+            bufferedWriter.write(this.providerName);
+            bufferedWriter.write("|");
+
+            //Append comments if any
+            if (this.comments != null)
+                bufferedWriter.write(this.comments);
+
+            //Append newline
+            bufferedWriter.write("\n");
+
+            success = 1;
+        }
+
+        catch (IOException e)
+        {
+            success = -1;
+        }
+
+        //Close writers
+        try
+        {
+            if (bufferedWriter != null)
+                bufferedWriter.close();
+
+            if (fileWriter != null)
+                fileWriter.close();
+        }
+        catch (Exception e) {
+            success = -2;
+        }
 
         return success;
     }
 
 
 
+    @Override
     public int writeReport(File writeFile)
     {
         int success = 0;
@@ -192,11 +278,76 @@ public class ServiceProvided extends Service {
 
 
 
-    public int loadFromFile(Scanner fStream)
+    //Reads a single line from file using argument Scanner object, and copies
+    //data into current object's fields
+    //Returns 0 (Failure; Null argument)
+    //       -1 (Failure; Unable to read in data for all fields)
+    //       -2 (Failure; Parse exception - Incorrect date format)
+    //        1 (Success)
+    @Override
+    public int loadFromFile(Scanner fileReader) throws NumberFormatException
     {
         int success = 0;
+
+        if (fileReader != null)
+        {
+            if (fileReader.hasNext())
+            {
+                //Read a line from file
+                String data = fileReader.nextLine();
+
+                //Split line using '|' as delimiter
+                String [] fields = data.split("\\|", 10);
+
+                //Copy fields into current object and flag success
+                if (fields.length == 10) {
+
+                    //Read in idNum, name and fee
+                    this.idNum = Integer.parseInt(fields[0]);
+                    this.name = fields[1];
+                    this.fee = Double.parseDouble(fields[2]);
+
+                    try {
+                        //Read in current date and time
+                        SimpleDateFormat currentDateFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+                        this.currentDateTime = new Date(currentDateFormatter.parse(fields[3]).getTime());
+
+                        //Read in service date
+                        SimpleDateFormat serviceDateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+                        this.serviceDate = new Date (serviceDateFormatter.parse(fields[4]).getTime());
+                    }
+                    catch (ParseException e)
+                    {
+                        return -2;
+                    }
+
+                    //Read in member ID and name
+                    this.memberID = Integer.parseInt(fields[5]);
+                    this.memberName = fields[6];
+
+                    //Read in provider ID and name
+                    this.providerID = Integer.parseInt(fields[7]);
+                    this.providerName = fields[8];
+
+                    //Read in comments if any
+                    if (fields[9].length() > 0)
+                        this.comments = fields[9];
+                    else
+                        this.comments = null;
+
+                    success = 1;
+                }
+
+                else
+                    success = -1;
+            }
+        }
 
         return success;
     }
 
+
 }
+
+
+

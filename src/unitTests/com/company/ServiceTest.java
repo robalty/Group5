@@ -71,7 +71,25 @@ public class ServiceTest {
     }
 
     @Test
-    public void writeToFile() throws Exception {
+    public void writeToFile() throws Exception
+    {
+        //Arrange
+        Service service1 = new Service(123456, "Service 1", 123.7);
+        Service service2 = new Service(123457, "Service 2", 123.7);
+        Service service3 = new Service(123458, "Service 3", 123.7);
+        service1.display();
+        File file = new File("data_files/testWrite.txt");
+
+        int result = service1.writeToFile(file);
+        int result2 = service2.writeToFile(file);
+        int result3 = service3.writeToFile(file);
+
+
+        //Assert
+        assertEquals(1, result);
+        assertEquals(1, result2);
+        assertEquals(1, result3);
+
     }
 
     @Test

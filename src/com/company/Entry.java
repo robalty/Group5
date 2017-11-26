@@ -144,7 +144,7 @@ public abstract class Entry extends Util{
     //ABSTRACT method to be implemented in derived classes
     //Appends data to argument File in format (depending upon derived class type)
     //Returns 0 (Failure; Null argument)
-    //       -1 (Failure; File not found)
+    //       -1 (Failure; IO Exception)
     //        1 (Success)
     abstract public int writeToFile(File writeFile);
 

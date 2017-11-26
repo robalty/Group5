@@ -1,8 +1,8 @@
 //Author: Meera Murali
 package com.company;
-
 import org.junit.Test;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.*;
 
@@ -146,7 +146,37 @@ public class ServiceProvidedTest {
     }
 
     @Test
-    public void writeToFile() throws Exception {
+    public void writeToFile() throws Exception
+    {
+        //Arrange
+        Service testService = new Service(123456, "Current", 123.7);
+        Service testService2 = new Service(123457, "Service 2", 123.7);
+        Service testService3 = new Service(123458, "Service 3", 123.7);
+
+        ServiceProvided service1 = new ServiceProvided(testService, "09/1/2017",
+                987654321, "Member name",
+                987654321, "Provider name",
+                null);
+        ServiceProvided service2 = new ServiceProvided(testService2, "09/1/2017",
+                987654321, "Member name",
+                987654321, "Provider name",
+                "Some comments....");
+        ServiceProvided service3 = new ServiceProvided(testService3, "09/1/2017",
+                987654321, "Member name",
+                987654321, "Provider name",
+                "Some comments....");
+
+        File file = new File("data_files/testWrite.txt");
+
+        int result = service1.writeToFile(file);
+        int result2 = service2.writeToFile(file);
+        int result3 = service3.writeToFile(file);
+
+
+        //Assert
+        assertEquals(1, result);
+        assertEquals(1, result2);
+        assertEquals(1, result3);
     }
 
     @Test
@@ -154,7 +184,59 @@ public class ServiceProvidedTest {
     }
 
     @Test
-    public void loadFromFile() throws Exception {
+    public void loadFromFile() throws Exception
+    {
+        //Arrange
+        ServiceProvided testService = new ServiceProvided();
+        File file = new File("data_files/list_of_services/P170000001.txt");
+        Scanner fileReader = new Scanner(file);
+        int read = 0;
+        int notRead = 0;
+
+        //Act: For each line in file, create a new service and read in data
+        while (fileReader.hasNext())
+        {
+            ServiceProvided newServiceProvided = new ServiceProvided();
+            try
+            {
+                int result = newServiceProvided.loadFromFile(fileReader);
+                if (result == 1)
+                {
+                    ++read;
+                    System.out.println("Read " + read);
+                    newServiceProvided.display();
+                }
+
+                else if (result == -1)
+                {
+                    System.out.println("Data not found for all fields");
+                    ++notRead;
+                }
+
+                else if (result == -2)
+                {
+                    System.out.println("Parse exception; Incorrect date format");
+                    ++notRead;
+                }
+
+                else
+                    ++notRead;
+            }
+
+            catch (NumberFormatException e)
+            {
+                System.out.println("Unable to parse number");
+                ++notRead;
+            }
+        }
+
+        //If all lines in file have not been read successfully
+        if (notRead != 0)
+            System.out.println("\n*** Unable to read: " + notRead + " lines ***");
+
+        //Assert
+        assertEquals(notRead, 0);
+        assertEquals(testService.loadFromFile(null), 0);
     }
 
 }
