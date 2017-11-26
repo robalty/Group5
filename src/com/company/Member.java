@@ -5,32 +5,27 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Provider extends Person {
-    protected List_service serviceList;
+public class Member extends Person {
     protected List_service serviceProvidedList;
 
-    public Provider(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String email, String phone) throws Exception {
+    public Member(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, String email, String phone) throws Exception {
         super(idNum, firstName, lastName, streetAddress, city, state, zip, email, phone);
-        this.serviceList = new List_service(List_Service_Type.all_services_available_provider);
         this.serviceProvidedList = new List_service(List_Service_Type.all_services_provided_provider);
     }
 
-    public Provider() {
+    public Member() {
         super();
-        this.serviceList = new List_service(List_Service_Type.all_services_available_provider);
         this.serviceProvidedList = new List_service(List_Service_Type.all_services_provided_provider);
     }
 
-    public Provider update() {
+    public Member update() {
         super.update();
         return this;
     }
 
     public int writeToFile(File aFile) {
-        int result = 0;
+        int result;
         String idString;
-        String serviceFilename;
-        File serviceFile;
         String serviceProvidedFilename;
         File serviceProvidedFile;
         FileWriter aFileWriter;
@@ -38,15 +33,9 @@ public class Provider extends Person {
         result = super.writeToFile(aFile);
         if (result != -1) {
             idString = Integer.toString(this.idNum);
-
-            serviceFilename = String.join("", "S", idString, ".txt");
-            serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
-            result += this.serviceList.write_Text_file(serviceFile);
-
             serviceProvidedFilename = String.join("", "P", idString, ".txt");
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
             result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
-
             try {
                 aFileWriter = new FileWriter(aFile, true);
                 aFileWriter.append("\n");
@@ -54,7 +43,6 @@ public class Provider extends Person {
             catch (IOException e) {
                 return -1;
             }
-
         }
         return result;
     }
@@ -66,33 +54,19 @@ public class Provider extends Person {
     public int loadFromFile(Scanner fileInput) {
         int result = 0;
         int count = 0;
-        String serviceFilename;
-        File serviceFile;
         String serviceProvidedFilename;
         File serviceProvidedFile;
 
         fileInput.useDelimiter(";");
         result = super.loadFromFile(fileInput);
         if (result==1) {
-
-            serviceFilename = fileInput.next();
-            serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
-            count += this.serviceList.load_data_from_text_file(serviceFile);
-
             serviceProvidedFilename = fileInput.next();
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            count += this.serviceProvidedList.load_data_from_text_file(serviceProvidedFile);
-
+            count = this.serviceProvidedList.load_data_from_text_file(serviceProvidedFile);
             return count;
         }
         else
             return result;
-    }
-
-    public int addService(Service toAdd) {
-        if (this.serviceList == null)
-            this.serviceList = new List_service(List_Service_Type.all_services_available_provider);
-        return this.serviceList.add_service_to_list(toAdd);
     }
 
     public int addServiceProvided(ServiceProvided toAdd) {
@@ -103,10 +77,6 @@ public class Provider extends Person {
 
     public void display() {
         super.display();
-        if (this.serviceList != null) {
-            System.out.println("Services offered:\n");
-            this.serviceList.display_all_list_services_();
-        }
         if (this.serviceProvidedList != null) {
             System.out.println("Services provided:\n");
             this.serviceProvidedList.display_all_list_services_();

@@ -176,8 +176,12 @@ abstract public class Person extends Entry {
     }
 
     public int writeToFile(File aFile) {
+        FileWriter aFileWriter;
+        String zipString;
+        String phoneString;
+
         try {
-            FileWriter aFileWriter = new FileWriter(aFile, true);
+            aFileWriter = new FileWriter(aFile, true);
 
             aFileWriter.append(this.firstName);
             aFileWriter.append(";");
@@ -194,22 +198,21 @@ abstract public class Person extends Entry {
             aFileWriter.append(this.state);
             aFileWriter.append(";");
 
-            String zipString = Integer.toString(this.zip);
+            zipString = Integer.toString(this.zip);
             aFileWriter.append(zipString);
             aFileWriter.append(";");
 
             aFileWriter.append(this.email);
             aFileWriter.append(";");
 
-            String temp = "";
+            phoneString = "";
             for (int i = 0; i < 10; ++i)
-                temp = String.join("", temp, Integer.toString(this.phone[i]));
-            aFileWriter.append(temp);
+                phoneString = String.join("", phoneString, Integer.toString(this.phone[i]));
+            aFileWriter.append(phoneString);
             aFileWriter.append(";");
 
             aFileWriter.close();
         } catch (IOException e) {
-//            e.printStackTrace();
             return -1;
         }
         return 1;
@@ -222,7 +225,7 @@ abstract public class Person extends Entry {
 
     public int loadFromFile(Scanner fileInput) {
         //add error handling/exceptions
-        fileInput.useDelimiter(";");
+        this.idNum = fileInput.nextInt();
         this.firstName = new String(fileInput.next());
         this.lastName = new String(fileInput.next());
         this.streetAddress = new String(fileInput.next());
