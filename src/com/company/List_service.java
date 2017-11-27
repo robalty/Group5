@@ -352,8 +352,8 @@ public class List_service {
     // Return 0 - SUCCESS
     // Return -1 if txt_name is null or the current list is empty
     // Return the number of Services that has been written in the text file
-    public int write_Text_file (String txt_name){
-        if ( txt_name == null)
+    public int write_Text_file (File newFile){
+        if ( newFile == null)
         {
             return -1;
         }
@@ -361,20 +361,17 @@ public class List_service {
             System.out.println("The list is empty ");
             return -1;
         }
-
-        File newFile = new File (txt_name) ;
         return write_Text_file(newFile, this.head);
     }
     private int write_Text_file (File newFile, Service curr) {
         if ( curr == null) {
             return 0;
         }
-        // It means it is not success
-        if ( curr.writeToFile(newFile) != 1)
-        {
-            System.out.println("System occurs errors");
-            return -1;
-        }
+
+            if ( curr.writeToFile(newFile) != 1) {
+                System.out.println("System occurs errors");
+                return -1;
+            }
         return write_Text_file(newFile,curr.goNext()) + 1;
     }
 
@@ -383,9 +380,7 @@ public class List_service {
     // Load from text file
     // Return -2 means the text is null
     // Return -1 means the type is not suitable
-    public int load_Services_from_text_file (String file_path) throws Exception{
-
-        File file = new File(file_path);
+    public int load_Services_from_text_file (File file) throws Exception{
         Scanner text_name = new Scanner(file);
         int number_reads = 0 ;
         if ( type == List_Service_Type.all_services_available_provider){
