@@ -15,7 +15,6 @@ abstract public class Person extends Entry {
     protected Scanner userInput;
 
     public Person(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip) throws Exception {
-        //add exception handling
         super(idNum);
         this.firstName = new String(firstName);
         this.lastName = new String(lastName);
@@ -159,7 +158,21 @@ abstract public class Person extends Entry {
     }
 
     public int writeReport(File aFile) {
+        FileWriter aFileWriter;
 
+        try {
+            aFileWriter = new FileWriter(aFile, true);
+            aFileWriter.append(String.join("","Name: ", this.firstName, " ", this.lastName, "\n"));
+            aFileWriter.append(String.join("", "ID Number: ", Integer.toString(this.idNum), "\n"));
+            aFileWriter.append(String.join("", "Street Address: ", this.streetAddress, "\n"));
+            aFileWriter.append(String.join("", "City: ", this.city, "\n"));
+            aFileWriter.append(String.join("", "State: ", this.state, "\n"));
+            aFileWriter.append(String.join("", "Zip Code: ", Integer.toString(this.zip), "\n"));
+            aFileWriter.close();
+        }
+        catch (IOException e) {
+            return -1;
+        }
         return 1;
     }
 

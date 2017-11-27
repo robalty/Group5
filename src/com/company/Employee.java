@@ -57,10 +57,6 @@ public class Employee extends Person {
         return result;
     }
 
-    public int writeReport(File aFile) {
-        return super.writeReport(aFile);
-    }
-
     public int loadFromFile(Scanner fileInput) {
         String jobTitleString;
 

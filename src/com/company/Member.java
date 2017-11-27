@@ -35,10 +35,11 @@ public class Member extends Person {
             idString = Integer.toString(this.idNum);
             serviceProvidedFilename = String.join("", "P", idString, ".txt");
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-//            result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
+            result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
             try {
                 aFileWriter = new FileWriter(aFile, true);
                 aFileWriter.append("\n");
+                aFileWriter.close();
             }
             catch (IOException e) {
                 return -1;
@@ -48,7 +49,17 @@ public class Member extends Person {
     }
 
     public int writeReport(File aFile) {
-        return super.writeReport(aFile);
+        int result = 0;
+        int count = 0;
+
+        result = super.writeReport(aFile);
+// uncomment once Thong has implemented the method
+/*        if (result==1) {
+            count += this.serviceProvidedList.write_report(aFile);
+            return count;
+        }
+        else
+*/        return result;
     }
 
     public int loadFromFile(Scanner fileInput) {
@@ -62,7 +73,7 @@ public class Member extends Person {
         if (result==1) {
             serviceProvidedFilename = fileInput.next();
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-//            count = this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+            count = this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
 
             fileInput.nextLine();
 
