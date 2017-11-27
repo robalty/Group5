@@ -13,6 +13,7 @@ abstract public class Person extends Entry {
     protected String state;
     protected int zip;
 
+    // Constructor with arguments
     public Person(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip) throws Exception {
         super(idNum);
         this.firstName = new String(firstName);
@@ -23,6 +24,7 @@ abstract public class Person extends Entry {
         this.zip = zip;
     }
 
+    // Default constructor
     public Person() {
         super();
         this.firstName = null;
@@ -33,6 +35,7 @@ abstract public class Person extends Entry {
         this.zip = 0;
     }
 
+    // Displays all the personal information
     public void display() {
         if (this.firstName==null || this.lastName==null || this.streetAddress==null || this.city==null || this.state==null || this.zip==0) {
             System.out.println("Missing info for person");
@@ -43,9 +46,11 @@ abstract public class Person extends Entry {
         System.out.println("Address: " + this.streetAddress + ", " + this.city + ", " + this.state + ", " + this.zip);
     }
 
+    // Allows the user to update the name or address of the person (employee, member, or provider)
+    // OUTPUT: returns a reference to the current object
     public Person update() {
-        String response;
-        String temp;
+        String response; // Whether the user wants to change a field
+        String temp; // Value the user wants to change a field to
 
         System.out.println("Here is the current information: ");
         display();
@@ -123,9 +128,13 @@ abstract public class Person extends Entry {
 
     }
 
+    // Writes all the personal information to an external file
+    // INPUT: File object for database file
+    // OUTPUT: -returns -1 if an error occurs while writing to file
+    //         -returns 1 if writing was successful
     public int writeToFile(File aFile) {
         FileWriter aFileWriter;
-        String zipString;
+        String zipString; // Temp string to convert zip code to before writing to file
 
         try {
             aFileWriter = new FileWriter(aFile, true);
@@ -156,6 +165,10 @@ abstract public class Person extends Entry {
         return 1;
     }
 
+    // Adds personal info the the report
+    // INPUT: File object for the report
+    // OUTPUT: -returns -1 if an error occured while writing
+    //         -returns 1 if writing was successful
     public int writeReport(File aFile) {
         FileWriter aFileWriter;
 
@@ -175,6 +188,10 @@ abstract public class Person extends Entry {
         return 1;
     }
 
+    // Loads personal information from an external file
+    // INPUT: Scanner object for the external file
+    // OUTPUT: -returns -1 if an error occurred
+    //         -returns 1 if loading was successful
     public int loadFromFile(Scanner fileInput) {
         try {
             this.idNum = fileInput.nextInt();

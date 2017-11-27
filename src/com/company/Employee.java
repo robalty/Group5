@@ -8,20 +8,24 @@ import java.util.Scanner;
 public class Employee extends Person {
     protected char jobTitleCode;
 
+    // Constructor with arguments
     public Employee(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, char jobTitleCode) throws Exception {
         super(idNum, firstName, lastName, streetAddress, city, state, zip);
         this.jobTitleCode = jobTitleCode;
     }
 
+    // Default constructor
     public Employee() {
         super();
         this.jobTitleCode = 'O';
     }
 
+    // Allows the user to update the name, address, or job title code of the employee
+    // OUTPUT: returns reference to the current Employee object
     public Employee update() {
-        String response;
-        String temp;
-        char newCode;
+        String response; // whether the user wants to change the job title code
+        String temp; // temporary value to read in from user
+        char newCode; // char for new job title code
 
         super.update();
         System.out.print("Do you want to change the job title code? Yes or No:");
@@ -43,6 +47,10 @@ public class Employee extends Person {
         return this;
     }
 
+    // Writes the personal information of the employee to the File object passed in
+    // INPUT: File object for the employee database
+    // OUTPUT: - returns -1 if an error occurs while writing the files
+    //         - returns 1 if writing was successful
     public int writeToFile(File aFile) {
         int result;
         FileWriter aFileWriter;
@@ -61,22 +69,30 @@ public class Employee extends Person {
         return result;
     }
 
+    // Loads a employee's information from external files
+    // INPUT: Scanner object for the employee database file
+    // OUTPUT: -returns -1 if an error occurs while loading from the file
+    //         -returns 1 if loading was successful
     public int loadFromFile(Scanner fileInput) {
-        String jobTitleString;
+        String jobTitleString; // String to read in job title from the file
+        char tempJobTitleCode; // Temp char to check if the value is valid ('M' or 'O')
 
         fileInput.useDelimiter(";");
         int result = super.loadFromFile(fileInput);
         if (result==1) {
             jobTitleString = new String(fileInput.next());
-            //add error handling
-            this.jobTitleCode = jobTitleString.charAt(0);
-            fileInput.nextLine();
-            return 1;
+            tempJobTitleCode = jobTitleString.charAt(0);
+            if (tempJobTitleCode == 'M' || tempJobTitleCode == 'O')
+                this.jobTitleCode = tempJobTitleCode;
+            else
+                result = -1;
         }
-        else
-            return result;
+        if (fileInput.hasNextLine())
+            fileInput.nextLine();
+        return result;
     }
 
+    // Displays all the information for the employee
     public void display() {
         super.display();
         System.out.println("Job Title Code: " + this.jobTitleCode);
