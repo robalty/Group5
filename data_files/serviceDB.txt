@@ -1,3 +1,21 @@
-170001|Service 1|123.98
-170002|Service 2|125.76
-170003|Service 3|109.34
+170001|Green Spa Treatment|123.98
+170002|Vanilla Therapy|125.76
+170003|Chocolate Immersion|109.34
+170004|Veggie Lovers 101|90.25
+170005|No Sweets, No Problem|45.00
+170006|The Art of Oatmeal Cookies|123.00
+170007|Broccoli Advocates|110.00
+170008|Pizza not Pastries|45.00
+170009|Direct Doctor Visit|200.00
+170010|One Year Personal Chef|15000.00
+170011|6 Month Personal Chef|8000.00
+170012|3 Month Personal Chef|5000.00
+170013|1 Month Personal Chef|3000.00
+170014|The Dangers of Cacao|130.00
+170015|The Dangers of Cacao 2|130.00
+170016|Strawberry Smoothie Master Course|200.00
+170017|Banana Bonanza|99.99
+170018|Trail Mix Makers|75.00
+170019|Milk: Who needs Chocolate?|55.55
+170020|Salads and Me|66.60
+170021|Garden Starters|120.25
