@@ -102,7 +102,7 @@ public class Member extends Person {
     public void display() {
         super.display();
         if (this.serviceProvidedList != null) {
-            System.out.println("Services provided:\n");
+            System.out.println("Services provided:");
             this.serviceProvidedList.display_all_list_services_();
         }
     }

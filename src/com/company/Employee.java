@@ -23,18 +23,22 @@ public class Employee extends Person {
         String temp;
         char newCode;
 
-        super.update();  //not currently using return value of Person method
+        super.update();
         System.out.print("Do you want to change the job title code? Yes or No:");
-        response = new String(this.userInput.next());
+        response = new String(this.input.next());
         if (0 == response.compareToIgnoreCase("Yes")) {
             System.out.print("Enter the new job title code: ");
-            userInput.nextLine();
-            temp = this.userInput.nextLine();
+            input.nextLine();
+            temp = this.input.nextLine();
             newCode = temp.charAt(0);
-            System.out.print("Do you want to change the job title code to: " + newCode + "? Yes or No:");
-            response = this.userInput.next();
-            if (0 == response.compareToIgnoreCase("Yes"))
-                this.jobTitleCode = newCode;
+            if (newCode=='M' || newCode=='O') {
+                System.out.print("Do you want to change the job title code to: " + newCode + "? Yes or No:");
+                response = this.input.next();
+                if (0 == response.compareToIgnoreCase("Yes"))
+                    this.jobTitleCode = newCode;
+            }
+            else
+                System.out.println("Invalid input.  Unable to change job title code.");
         }
         return this;
     }

@@ -147,11 +147,11 @@ public class Provider extends Person {
     public void display() {
         super.display();
         if (this.serviceList != null) {
-            System.out.println("Services offered:\n");
+            System.out.println("Services offered:");
             this.serviceList.display_all_list_services_();
         }
         if (this.serviceProvidedList != null) {
-            System.out.println("Services provided:\n");
+            System.out.println("Services provided:");
             this.serviceProvidedList.display_all_list_services_();
         }
     }

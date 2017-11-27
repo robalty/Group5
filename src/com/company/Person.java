@@ -12,7 +12,6 @@ abstract public class Person extends Entry {
     protected String city;
     protected String state;
     protected int zip;
-    protected Scanner userInput;
 
     public Person(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip) throws Exception {
         super(idNum);
@@ -22,7 +21,6 @@ abstract public class Person extends Entry {
         this.city = new String(city);
         this.state = new String(state);
         this.zip = zip;
-        this.userInput = new Scanner(System.in);
     }
 
     public Person() {
@@ -33,7 +31,6 @@ abstract public class Person extends Entry {
         this.city = null;
         this.state = null;
         this.zip = 0;
-        this.userInput = new Scanner(System.in);
     }
 
     public void display() {
@@ -44,81 +41,83 @@ abstract public class Person extends Entry {
         System.out.println("First Name: " + this.firstName);
         System.out.println("Last Name: " + this.lastName);
         System.out.println("Address: " + this.streetAddress + ", " + this.city + ", " + this.state + ", " + this.zip);
-        System.out.println();
     }
 
     public Person update() {
         String response;
         String temp;
 
-        //add error handling/exceptions
         System.out.println("Here is the current information: ");
         display();
         System.out.print("Do you want to change the first name? Yes or No:");
-        response = new String(this.userInput.next());
+        response = new String(this.input.next());
         if (0==response.compareToIgnoreCase("Yes")) {
             System.out.print("Enter the new first name: ");
-            userInput.nextLine();
-            temp = this.userInput.nextLine();
+            this.input.nextLine();
+            temp = this.input.nextLine();
             System.out.print("Do you want to change the first name to: " + temp + "? Yes or No:");
-            response = this.userInput.next();
+            response = this.input.next();
             if (0==response.compareToIgnoreCase("Yes"))
                 this.firstName = temp;
         }
         System.out.print("Do you want to change the last name? Yes or No:");
-        response = this.userInput.next();
+        response = this.input.next();
         if (0==response.compareToIgnoreCase("Yes")) {
             System.out.print("Enter the new last name: ");
-            userInput.nextLine();
-            temp = this.userInput.nextLine();
+            this.input.nextLine();
+            temp = this.input.nextLine();
             System.out.print("Do you want to change the last name to: " + temp + "? Yes or No:");
-            response = this.userInput.next();
+            response = this.input.next();
             if (0==response.compareToIgnoreCase("Yes"))
                 this.lastName = temp;
         }
         System.out.print("Do you want to change the street address? Yes or No:");
-        response = this.userInput.next();
+        response = this.input.next();
         if (0==response.compareToIgnoreCase("Yes")) {
             System.out.print("Enter the new street address: ");
-            userInput.nextLine();
-            temp = this.userInput.nextLine();
+            this.input.nextLine();
+            temp = this.input.nextLine();
             System.out.print("Do you want to change the street address to: " + temp + "? Yes or No:");
-            response = this.userInput.next();
+            response = this.input.next();
             if (0==response.compareToIgnoreCase("Yes"))
                 this.streetAddress = temp;
         }
         System.out.print("Do you want to change the city? Yes or No:");
-        response = this.userInput.next();
+        response = this.input.next();
         if (0==response.compareToIgnoreCase("Yes")) {
             System.out.print("Enter the new city: ");
-            userInput.nextLine();
-            temp = this.userInput.nextLine();
+            this.input.nextLine();
+            temp = this.input.nextLine();
             System.out.print("Do you want to change the city to: " + temp + "? Yes or No:");
-            response = this.userInput.next();
+            response = this.input.next();
             if (0==response.compareToIgnoreCase("Yes"))
                 this.city = temp;
         }
         System.out.print("Do you want to change the state? Yes or No:");
-        response = this.userInput.next();
+        response = this.input.next();
         if (0==response.compareToIgnoreCase("Yes")) {
             System.out.print("Enter the new state: ");
-            userInput.nextLine();
-            temp = this.userInput.nextLine();
+            this.input.nextLine();
+            temp = this.input.nextLine();
             System.out.print("Do you want to change the state to: " + temp + "? Yes or No:");
-            response = this.userInput.next();
+            response = this.input.next();
             if (0==response.compareToIgnoreCase("Yes"))
                 this.state = temp;
         }
         System.out.print("Do you want to change the zip? Yes or No:");
-        response = this.userInput.next();
+        response = this.input.next();
         if (0==response.compareToIgnoreCase("Yes")) {
             System.out.print("Enter the new zip: ");
-            userInput.nextLine();
-            int tempZip = this.userInput.nextInt();
-            System.out.print("Do you want to change the zip to: " + tempZip + "? Yes or No:");
-            response = this.userInput.next();
-            if (0==response.compareToIgnoreCase("Yes"))
-                this.zip = tempZip;
+            this.input.nextLine();
+            if (this.input.hasNextInt()) {
+                int tempZip = this.input.nextInt();
+                System.out.print("Do you want to change the zip to: " + tempZip + "? Yes or No:");
+                response = this.input.next();
+                if (0 == response.compareToIgnoreCase("Yes"))
+                    this.zip = tempZip;
+            }
+            else
+                System.out.println("Invalid input.  Unable to change zip code.");
         }
         return this;
 
