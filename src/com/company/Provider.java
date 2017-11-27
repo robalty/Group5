@@ -49,7 +49,13 @@ public class Provider extends Person {
 
             try {
                 aFileWriter = new FileWriter(aFile, true);
-                aFileWriter.append("\n");
+
+                aFileWriter.append(serviceFilename);
+                aFileWriter.append(";");
+
+                aFileWriter.append(serviceProvidedFilename);
+                aFileWriter.append(";\n");
+
                 aFileWriter.close();
             }
             catch (IOException e) {
@@ -102,15 +108,23 @@ public class Provider extends Person {
         result = super.loadFromFile(fileInput);
         if (result==1) {
 
-            serviceFilename = fileInput.next();
-            serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
-            count += this.serviceList.load_Services_from_text_file(serviceFile);
+            try {
+                serviceFilename = fileInput.next();
+                serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
+                if (serviceFile.length() > 0)
+                    count += this.serviceList.load_Services_from_text_file(serviceFile);
 
-            serviceProvidedFilename = fileInput.next();
-            serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            count += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+                serviceProvidedFilename = fileInput.next();
+                serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
+                if (serviceProvidedFile.length() > 0)
+                    count += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+            }
+            catch(Exception e) {
+                count = -1;
+            }
 
-            fileInput.nextLine();
+            if (fileInput.hasNextLine())
+                fileInput.nextLine();
 
             return count;
         }

@@ -38,7 +38,10 @@ public class Member extends Person {
             result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
             try {
                 aFileWriter = new FileWriter(aFile, true);
-                aFileWriter.append("\n");
+
+                aFileWriter.append(serviceProvidedFilename);
+                aFileWriter.append(";\n");
+
                 aFileWriter.close();
             }
             catch (IOException e) {
@@ -71,11 +74,18 @@ public class Member extends Person {
         fileInput.useDelimiter(";");
         result = super.loadFromFile(fileInput);
         if (result==1) {
-            serviceProvidedFilename = fileInput.next();
-            serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
-            count = this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+            try {
+                serviceProvidedFilename = fileInput.next();
+                serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
+                if (serviceProvidedFile.length() > 0)
+                    count += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+            }
+            catch (Exception e) {
+                count = -1;
+            }
 
-            fileInput.nextLine();
+            if (fileInput.hasNextLine())
+                fileInput.nextLine();
 
             return count;
         }
