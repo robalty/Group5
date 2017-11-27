@@ -1,6 +1,12 @@
+//Author: Meera Murali
 package com.company;
 
+
+import java.io.BufferedWriter;
+import java.util.Date;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Service extends Entry {
@@ -8,8 +14,6 @@ public class Service extends Entry {
     protected String name;  //name of service
     protected double fee;   //service fee
     protected Service next; //reference to next service in list
-
-
 
     //Default constructor
     public Service()
@@ -23,7 +27,14 @@ public class Service extends Entry {
         this.next = null;
     }
 
-
+    //Test constructor
+    public Service(int id)
+    {
+        super(id);
+        this.name = Integer.toString(id);
+        this.fee = 0.0;
+        this.next = null;
+    }
 
     //Constructor with arguments
     public Service(int id, String aName, double aFee)
@@ -169,9 +180,60 @@ public class Service extends Entry {
 
 
 
+    //Appends data to argument File
+    //Returns 0 (Failure; Null argument)
+    //       -1 (Failure; IO Exception)
+    //       -2 (Failure; Unable to close writer)
+    //        1 (Success)
     public int writeToFile(File writeFile)
     {
-        int success = 0;
+        int success;
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
+        //null argument
+        if (writeFile == null)
+            return 0;
+
+        try
+        {
+            fileWriter = new FileWriter(writeFile, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            //Append idNum
+            bufferedWriter.write(Integer.toString(this.idNum));
+            bufferedWriter.write("|");
+
+            //Append name
+            bufferedWriter.write(this.name);
+            bufferedWriter.write("|");
+
+            //Append fee
+            bufferedWriter.write(Double.toString(this.fee));
+            bufferedWriter.write("\n");
+
+            success = 1;
+        }
+
+        catch (IOException e)
+        {
+            success = -1;
+        }
+
+        //Close writers
+        try
+        {
+            if (bufferedWriter != null)
+                bufferedWriter.close();
+
+            if (fileWriter != null)
+                fileWriter.close();
+        }
+        catch (Exception e)
+        {
+            success = -2;
+        }
+
 
         return success;
     }
@@ -224,8 +286,7 @@ public class Service extends Entry {
 
         return success;
     }
-
-
+//Some stuff
 
     //Copies argument object's idNum, name and fee
     //Does not change left, right, next values
@@ -248,6 +309,11 @@ public class Service extends Entry {
     }
 
 
+    // test
+    void display_name () {
+        System.out.println(name);
+    }
+
 
     public static void main(String[] args) {
 
@@ -258,5 +324,11 @@ public class Service extends Entry {
             System.out.println("\nUpdate successful!");
         }
         test.display();
+    }
+    public int getNumberOfServices() {
+        return 0;
+    }
+    public double getTotalFee(){
+        return fee;
     }
 }
