@@ -45,6 +45,8 @@ public class Member extends Person {
             idString = Integer.toString(this.idNum);
             serviceProvidedFilename = String.join("", "P", idString, ".txt");
             serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
+            if (serviceProvidedFile.exists())
+                clearFileContents(serviceProvidedFile);
             result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
             try {
                 aFileWriter = new FileWriter(aFile, true);
@@ -65,25 +67,20 @@ public class Member extends Person {
     // INPUT: File object to write report to
     public int writeReport(File aFile) {
         int result = 0;
-        int count = 0;
 
         result = super.writeReport(aFile);
 // uncomment once Thong has implemented the method
-/*        if (result==1) {
-            count += this.serviceProvidedList.write_report(aFile);
-            return count;
-        }
-        else
-*/        return result;
+/*        if (result==1)
+            result += this.serviceProvidedList.write_report(aFile);
+*/    return result;
     }
 
     // Loads a member's information from external files
     // INPUT: Scanner object for the member database file
     // OUTPUT: -returns -1 if an error occurs while loading from the file
-    //         -returns the number of services provided loaded if loading was successful
+    //         -returns the number of items loaded (1 for personal info plus 1 for each service and service provided)
     public int loadFromFile(Scanner fileInput) {
         int result = 0;
-        int count = 0;
         String serviceProvidedFilename;
         File serviceProvidedFile;
 
@@ -94,19 +91,16 @@ public class Member extends Person {
                 serviceProvidedFilename = fileInput.next();
                 serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
                 if (serviceProvidedFile.length() > 0)
-                    count += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+                    result += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
             }
             catch (Exception e) {
-                count = -1;
+                result = -1;
             }
 
             if (fileInput.hasNextLine())
                 fileInput.nextLine();
-
-            return count;
         }
-        else
-            return result;
+        return result;
     }
 
     // Adds a service that the member has been provided to the serviceProvidedList

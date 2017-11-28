@@ -167,7 +167,7 @@ abstract public class Person extends Entry {
 
     // Adds personal info the the report
     // INPUT: File object for the report
-    // OUTPUT: -returns -1 if an error occured while writing
+    // OUTPUT: -returns -1 if an error occurred while writing
     //         -returns 1 if writing was successful
     public int writeReport(File aFile) {
         FileWriter aFileWriter;
@@ -208,5 +208,18 @@ abstract public class Person extends Entry {
         return 1;
     }
 
+    protected int clearFileContents(File aFile) {
+        FileWriter aFileWriter;
+
+        try {
+            aFileWriter = new FileWriter(aFile, false);
+            aFileWriter.write("");
+            aFileWriter.close();
+        }
+        catch (Exception e) {
+            return -1;
+        }
+        return 1;
+    }
 
 }
