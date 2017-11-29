@@ -5,6 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/* *********************************************************************************************************************
+The Member class (derived from the Person class) is a node in the tree of ChocAn members, and contains the fields
+and methods specific to an member.
+********************************************************************************************************************* */
+
 public class Member extends Person {
     protected List_service serviceProvidedList;
 
@@ -44,7 +49,7 @@ public class Member extends Person {
         if (result != -1) {
             idString = Integer.toString(this.idNum);
             serviceProvidedFilename = String.join("", "P", idString, ".txt");
-            serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
+            serviceProvidedFile = new File("data_files\\list_of_services\\member\\" + serviceProvidedFilename);
             if (serviceProvidedFile.exists())
                 clearFileContents(serviceProvidedFile);
             result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
@@ -89,7 +94,7 @@ public class Member extends Person {
         if (result==1) {
             try {
                 serviceProvidedFilename = fileInput.next();
-                serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
+                serviceProvidedFile = new File("data_files\\list_of_services\\member\\" + serviceProvidedFilename);
                 if (serviceProvidedFile.length() > 0)
                     result += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
             }

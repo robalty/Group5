@@ -5,6 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/* *********************************************************************************************************************
+The Employee class (derived from the Person class) is a node in the tree of ChocAn employees, and contains the fields
+and methods specific to an employee.
+********************************************************************************************************************* */
+
 public class Employee extends Person {
     protected char jobTitleCode;
 

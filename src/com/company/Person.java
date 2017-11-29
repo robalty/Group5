@@ -5,6 +5,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/* *********************************************************************************************************************
+The Person class (derived from the Entry class) is an abstract base class for the Employee, Member, and Provider
+classes.  It contains the fields and methods that will be used by all three classes.
+********************************************************************************************************************* */
+
 abstract public class Person extends Entry {
     protected String firstName;
     protected String lastName;

@@ -3,7 +3,13 @@ package com.company;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Scanner;
+
+/* *********************************************************************************************************************
+The Provider class (derived from the Person class) is a node in the tree of ChocAn providers, and contains the fields
+and methods specific to an provider.
+********************************************************************************************************************* */
 
 public class Provider extends Person {
     protected List_service serviceList;  //List of services the provider offers
@@ -51,13 +57,13 @@ public class Provider extends Person {
             idString = Integer.toString(this.idNum);
 
             serviceFilename = String.join("", "S", idString, ".txt");
-            serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
+            serviceFile = new File("data_files\\list_of_services\\provider\\" + serviceFilename);
             if (serviceFile.exists())
                 clearFileContents(serviceFile);
             result += this.serviceList.write_Text_file(serviceFile);
 
             serviceProvidedFilename = String.join("", "P", idString, ".txt");
-            serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
+            serviceProvidedFile = new File("data_files\\list_of_services\\provider\\" + serviceProvidedFilename);
             if (serviceProvidedFile.exists())
                 clearFileContents(serviceProvidedFile);
             result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
@@ -91,6 +97,44 @@ public class Provider extends Person {
 /*        if (result==1)
             result += this.serviceProvidedList.write_report(aFile);
 */    return result;
+    }
+
+    // Writes an Electronic Funds Transfer report for the amount ChocAn owes to the provider
+    // INPUT: File object to write the report to
+    // OUTPUT -returns -1 if an error occurs while writing the file
+    //        -returns 0 if there are no fees and so no report is written
+    //        -returns 1 if the report was successfully written
+    public int writeEftReport(File aFile) {
+        FileWriter aFileWriter;
+        double totalFee;  // Total fee provider is owed
+        DecimalFormat feeFormat;  // Formats fee to have 2 decimal points
+        String formattedFee; // String for fee to write to file after formatting
+        int result;
+
+        totalFee = this.getTotalFee();
+        if (totalFee > 0) {
+            try {
+                aFileWriter = new FileWriter(aFile);
+
+                aFileWriter.write(String.join("","Provider Name: ", this.firstName, " ", this.lastName, "\n"));
+
+                aFileWriter.write(String.join("", "Provider ID Number: ", Integer.toString(this.idNum), "\n"));
+
+                feeFormat = new DecimalFormat("#,###.00");
+                formattedFee = feeFormat.format(totalFee);
+                aFileWriter.write(String.join("","Amount to be Transferred: $", formattedFee));
+
+                aFileWriter.close();
+
+                result = 1;
+            }
+            catch (Exception e) {
+                result = -1;
+            }
+        }
+        else
+            result = 0;
+        return result;
     }
 
     // Gets the total amount owed to the provider by ChocAn
@@ -130,12 +174,12 @@ public class Provider extends Person {
 
             try {
                 serviceFilename = fileInput.next();
-                serviceFile = new File("data_files\\list_of_services\\" + serviceFilename);
+                serviceFile = new File("data_files\\list_of_services\\provider\\" + serviceFilename);
                 if (serviceFile.length() > 0)
                     result += this.serviceList.load_Services_from_text_file(serviceFile);
 
                 serviceProvidedFilename = fileInput.next();
-                serviceProvidedFile = new File("data_files\\list_of_services\\" + serviceProvidedFilename);
+                serviceProvidedFile = new File("data_files\\list_of_services\\provider\\" + serviceProvidedFilename);
                 if (serviceProvidedFile.length() > 0)
                     result += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
             }
