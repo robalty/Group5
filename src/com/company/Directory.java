@@ -11,7 +11,7 @@ package com.company;
 public class Directory extends Tree {
     public Directory () { super(); }
 
-    public Directory(Entry toAdd) { super(toAdd); }
+    public Directory(Entry toAdd) { this.root = toAdd; }
 
     //Wrapper function to call the recursive function to insert a new node into the tree. The address of root is then
     //reassigned after the insertion is performed.
@@ -19,14 +19,14 @@ public class Directory extends Tree {
 
     //Recursive function that actually performs the insert. Because this is a binary search tree, all new nodes are
     //inserted at a leaf at the appropriate location to keep the tree organized.
-    protected Entry insertEntry(Entry current, Entry toInsert){
+    protected Entry insertEntry(Entry current, Service toInsert){
         //Case #1: Insert at leaf.
         if(current == null){
             current = toInsert;
             return current;
         }
 
-        int difference = current.compare(toInsert);
+        int difference = current.compareByName(toInsert.name);
 
         //Case #2: Insertion is a duplicate
         if(difference == 0) return current;
@@ -35,13 +35,13 @@ public class Directory extends Tree {
         //If the item to insert is smaller than the current node.
         if(difference > 0){
             current.setLeft(insertEntry(current.goLeft(), toInsert)); //Recursive call.
-            current = balanceTreeAfterInsert(current, toInsert);
+            current = balanceTreeAfterInsert(current, toInsert.name);
         }
 
         //Case #4: If the item to insert is larger than the current node.
         else {
             current.setRight(insertEntry(current.goRight(), toInsert)); //Recursive call.
-            current = balanceTreeAfterInsert(current, toInsert);
+            current = balanceTreeAfterInsert(current, toInsert.name);
         }
 
         return current;
@@ -55,7 +55,7 @@ public class Directory extends Tree {
         //Case #1: Entry not found.
         if(current == null) return current;
 
-        int difference = current.compare(toRemove);
+        int difference = current.compareByName(toRemove);
 
         //Case #2: Match found, remove.
         if(difference == 0) {
@@ -93,7 +93,7 @@ public class Directory extends Tree {
             return retrieve;
         }
 
-        int difference = current.compare(toFind);
+        int difference = current.compareByName(toFind);
 
         //Case #2: Match found
         if(difference == 0)
@@ -106,6 +106,41 @@ public class Directory extends Tree {
             //Case #4: Search term is larger than current Entry
         else
             return searchEntry(current.goRight(), retrieve, toFind);
+    }
+
+
+
+
+    //Balances the tree after insertions take place.
+    protected Entry balanceTreeAfterInsert(Entry current, String inserted) {
+        //If the reference is empty.
+        if(current == null)
+            return current;
+
+        //Calculates the difference in height between the two subtrees.
+        int difference = getHeight(current.goLeft()) - getHeight(current.goRight());
+
+        //If the tree is balanced, return.
+        if(difference < 2 && difference > -2)
+            return current;
+
+        //If tree is left-heavy.
+        if(difference == 2){
+            if((current.goLeft()).compareByName(inserted) > 0) //If item was inserted to the left.
+                current = rotateLeft(current);
+            else
+                current = doubleRotateLeft(current);
+        }
+
+        //If tree is right-heavy.
+        else if(difference == -2){
+            if((current.goRight()).compareByName(inserted) < 0) //If item was inserted to the right.
+                current = rotateRight(current);
+            else
+                current = doubleRotateRight(current);
+        }
+
+        return current;
     }
 
     //Balances the tree after removals take place.
@@ -123,7 +158,7 @@ public class Directory extends Tree {
 
         //If tree is left-heavy.
         if(difference >= 2) {
-            if((current.goLeft()).compare(removed) < 0) //If item was removed from the right.
+            if((current.goLeft()).compareByName(removed) < 0) //If item was removed from the right.
                 current = rotateLeft(current);
             else
                 current = doubleRotateLeft(current);
@@ -131,7 +166,7 @@ public class Directory extends Tree {
 
         //If tree is right-heavy.
         else if(difference <= -2) {
-            if((current.goRight()).compare(removed) > 0) //If item was removed from the left.
+            if((current.goRight()).compareByName(removed) > 0) //If item was removed from the left.
                 current = rotateRight(current);
             else
                 current = doubleRotateRight(current);

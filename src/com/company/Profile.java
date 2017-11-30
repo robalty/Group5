@@ -1,17 +1,17 @@
 package com.company;
-
+import java.util.Date;
 import java.util.Scanner;
 /**
  * Created by angry on 11/22/2017.
  */
 abstract public class Profile {
-    protected Tree[] data;
-
+    protected Database[] data;
+    Date currentDate = new Date();
     public Profile() {
         data = null;
     }
 
-    public Profile(Tree[] info) {
+    public Profile(Database[] info) {
         data = info;
     }
 
@@ -21,13 +21,11 @@ abstract public class Profile {
         data[0].test();
     }
 
-    public Entry search(int id) {
+    public Member searchMembers(int id) {
         if (data != null) {
-            for (int i = 0; i < 4; ++i) {
-                Entry temp = data[0].searchEntry(id);
+                Member temp = (Member) data[3].searchEntry(id);
                 if (temp != null)
                     return temp;
-            }
         }
         System.out.println("Entry not found");
         return null;
