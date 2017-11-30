@@ -50,6 +50,8 @@ public class OperatorProfile extends Profile {
                     toWrite = new File(".\\report.txt");
                     data[1].writeCombinedEntryReports(toWrite);
                 }
+                else
+                    System.out.println("Insufficient user privilege to access this function!");
                 break;
         }
         return true;

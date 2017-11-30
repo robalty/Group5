@@ -191,8 +191,8 @@ public class Tree {
             return 0;
 
         current.writeToFile(treeFile);
-        count = displayEntries(current.goLeft());
-        count += displayEntries(current.goRight());
+        count = writeEntries(current.goLeft(), treeFile);
+        count += writeEntries(current.goRight(), treeFile);
 
         return ++count;
     }
