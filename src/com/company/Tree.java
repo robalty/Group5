@@ -104,7 +104,7 @@ public class Tree {
         if(toRemove.goLeft() == null && toRemove.goRight() == null)
             return null;
 
-        //Case #2: Node has only one child.
+            //Case #2: Node has only one child.
         else if(toRemove.goLeft() == null || toRemove.goRight() == null) {
             if(toRemove.goLeft() == null)
                 temp = toRemove.goRight();
@@ -119,7 +119,7 @@ public class Tree {
         }
 
         //Case #4: Node has two children, and the right has two children.
-	    else {
+        else {
             temp = toRemove.goRight();
             while (temp.goLeft() != null) {
                 hold = temp;
@@ -175,7 +175,7 @@ public class Tree {
         if(difference > 0)
             return searchEntry(current.goLeft(), retrieve, toFind);
 
-        //Case #4: Search term is larger than current Entry
+            //Case #4: Search term is larger than current Entry
         else
             return searchEntry(current.goRight(), retrieve, toFind);
     }
@@ -191,8 +191,8 @@ public class Tree {
             return 0;
 
         current.writeToFile(treeFile);
-        count = displayEntries(current.goLeft());
-        count += displayEntries(current.goRight());
+        count = writeEntries(current.goLeft(), treeFile);
+        count += writeEntries(current.goRight(), treeFile);
 
         return ++count;
     }

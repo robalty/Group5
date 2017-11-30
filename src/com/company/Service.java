@@ -3,7 +3,6 @@ package com.company;
 
 
 import java.io.BufferedWriter;
-import java.util.Date;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,6 +13,8 @@ public class Service extends Entry {
     protected String name;  //name of service
     protected double fee;   //service fee
     protected Service next; //reference to next service in list
+
+
 
     //Default constructor
     public Service()
@@ -27,14 +28,7 @@ public class Service extends Entry {
         this.next = null;
     }
 
-    //Test constructor
-    public Service(int id)
-    {
-        super(id);
-        this.name = Integer.toString(id);
-        this.fee = 0.0;
-        this.next = null;
-    }
+
 
     //Constructor with arguments
     public Service(int id, String aName, double aFee)
@@ -164,6 +158,33 @@ public class Service extends Entry {
 
 
 
+    //Compares current service's name with String argument
+    //Returns -2 if argument is null.
+    //Returns -1 if current object's name is lesser than,
+    //         0 if equal to, and
+    //         1 if greater than argument
+    public int compareByName(String toCompare)
+    {
+        //Null argument
+        if (toCompare == null)
+            return -2;
+
+        int compareResult = this.name.compareTo(toCompare);
+
+        //Current object's name lesser than argument
+        if (compareResult < 0)
+            return -1;
+
+        //Current object's name matches argument
+        if (compareResult == 0)
+            return 0;
+
+        //Current object's name greater than argument
+        return 1;
+    }
+
+
+
     //Sets current object’s next to argument value
     //No return value
     public void setNext(Service toAdd)
@@ -239,12 +260,79 @@ public class Service extends Entry {
     }
 
 
-
+    //Method to write each service provided in PROVIDER DIRECTORY
+    /*Sample output (Each new line indented (\t)):
+    	Service name: Service 1
+	    Service code: 123456
+	    Fee: 123.7
+     */
+    //Appends data in report format to argument File
+    //Returns 0 (Failure; Null argument)
+    //       -1 (Failure; IO Exception)
+    //       -2 (Failure; Unable to close writer)
+    //        1 (Success)
     public int writeReport(File writeFile)
     {
-        int success = 0;
+        int success;
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
+        //null argument
+        if (writeFile == null)
+            return 0;
+
+        try
+        {
+            fileWriter = new FileWriter(writeFile, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            //Append service name
+            bufferedWriter.write("\tService name: ");
+            bufferedWriter.write(this.name);
+            bufferedWriter.write("\n");
+
+            //Append service code
+            bufferedWriter.write("\tService code: ");
+            bufferedWriter.write(Integer.toString(this.idNum));
+            bufferedWriter.write("\n");
+
+            //Append fee
+            bufferedWriter.write("\tFee: ");
+            bufferedWriter.write(Double.toString(this.fee));
+            bufferedWriter.write("\n");
+
+            success = 1;
+        }
+
+        catch (IOException e)
+        {
+            success = -1;
+        }
+
+        //Close writers
+        try
+        {
+            if (bufferedWriter != null)
+                bufferedWriter.close();
+
+            if (fileWriter != null)
+                fileWriter.close();
+        }
+        catch (Exception e)
+        {
+            success = -2;
+        }
+
 
         return success;
+    }
+
+
+
+    //Dummy method overridden in ServiceProvided class
+    protected int writeMemberReport(File writeFile)
+    {
+        return 0;
     }
 
 
@@ -257,8 +345,8 @@ public class Service extends Entry {
     public int loadFromFile(Scanner fileReader) throws NumberFormatException
     {
         int success = 0;    //flag if a single line has been read from file
-                            //and data copied into idNum, name and fee fields
-                            //of current object
+        //and data copied into idNum, name and fee fields
+        //of current object
 
         if (fileReader != null)
         {
@@ -286,7 +374,8 @@ public class Service extends Entry {
 
         return success;
     }
-//Some stuff
+
+
 
     //Copies argument object's idNum, name and fee
     //Does not change left, right, next values
@@ -309,11 +398,6 @@ public class Service extends Entry {
     }
 
 
-    // test
-    void display_name () {
-        System.out.println(name);
-    }
-
 
     public static void main(String[] args) {
 
@@ -324,11 +408,5 @@ public class Service extends Entry {
             System.out.println("\nUpdate successful!");
         }
         test.display();
-    }
-    public int getNumberOfServices() {
-        return 0;
-    }
-    public double getTotalFee(){
-        return fee;
     }
 }

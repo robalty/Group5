@@ -3,8 +3,7 @@ package com.company;
 /**
  * Created by ThongTran on 11/20/17.
  */
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,23 +29,23 @@ import java.util.Scanner;
 
 // Enumeration that shows the list type of three different type of list
 enum  List_Service_Type {
-        all_services_available_provider, all_services_provided_provider, all_services_received_customer
+    all_services_available_provider, all_services_provided_provider, all_services_received_customer
 }
 
 public class List_service {
-        private Scanner read;           // Use for reading the file from scanner
-        private Service head;           // Start of the List
-        private Service tail;           // Last of the list
-        private List_Service_Type type; // Type of the list
-        public List_service  (){
-               this.head = null;
-               this.tail = null;
-               this.type = null;
-        }
-        public List_service( List_Service_Type type) {
-            this();
-            this.type = type;
-        }
+    private Scanner read;           // Use for reading the file from scanner
+    private Service head;           // Start of the List
+    private Service tail;           // Last of the list
+    private List_Service_Type type; // Type of the list
+    public List_service  (){
+        this.head = null;
+        this.tail = null;
+        this.type = null;
+    }
+    public List_service( List_Service_Type type) {
+        this();
+        this.type = type;
+    }
 
 
     // Public addition method
@@ -63,7 +62,7 @@ public class List_service {
         switch (type)
         {
             case all_services_available_provider:
-               result =  add_all_available_services_for_provider(to_add);
+                result =  add_all_available_services_for_provider(to_add);
                 break;
             case all_services_provided_provider:
                 result = add_all_services_provided_for_provider(to_add);
@@ -133,25 +132,25 @@ public class List_service {
             return 1;
         }
         else if ( head != null) {
-                if ( head.compareByName(to_add)  == 1 || head.compareByName(to_add) == 0)
+            if ( head.compareByName(to_add)  == 1 || head.compareByName(to_add) == 0)
+            {
+                to_add.setNext(head);
+                head = to_add;
+                tail = head;
+                return 1;
+            }
+            else
+            {
+                Service curr = head;
+                while ( curr.goNext() != null && curr.goNext().compareByName(to_add) == -1)
                 {
-                    to_add.setNext(head);
-                    head = to_add;
-                    tail = head;
-                    return 1;
+                    curr = curr.goNext();
                 }
-                else
-                {
-                    Service curr = head;
-                    while ( curr.goNext() != null && curr.goNext().compareByName(to_add) == -1)
-                    {
-                        curr = curr.goNext();
-                    }
-                    to_add.setNext( curr.goNext());
-                    curr.setNext(to_add);
-                    tail = to_add.goNext();
-                    return 1;
-                }
+                to_add.setNext( curr.goNext());
+                curr.setNext(to_add);
+                tail = to_add.goNext();
+                return 1;
+            }
         }
         else
         {
@@ -190,10 +189,10 @@ public class List_service {
                 Service curr = head;
                 // Going through the list to sort
                 while (curr.goNext() != null) {
-                        ServiceProvided tmp = (ServiceProvided)(curr.goNext());
-                        if (tmp.compareByServiceDate(to_data) == 1) {
-                            curr = curr.goNext();
-                        }
+                    ServiceProvided tmp = (ServiceProvided)(curr.goNext());
+                    if (tmp.compareByServiceDate(to_data) == 1) {
+                        curr = curr.goNext();
+                    }
                 }
                 to_add.setNext( curr.goNext());
                 curr.setNext(to_add);
@@ -214,15 +213,15 @@ public class List_service {
     public int display_all_list_services_(){
         if ( head == null)
         {
-            System.out.println("The List of services provided is currently empty");
+            System.out.println("The list is currently empty");
             return -1;
         }
-          return  display_all_list_services(this.head);
+        return  display_all_list_services(this.head);
     }
     private int display_all_list_services ( Service curr)
     {
         if(curr == null) return 0;
-            curr.display();
+        curr.display();
         return display_all_list_services(curr.goNext())  + 1;
     }
 
@@ -238,16 +237,16 @@ public class List_service {
         return search_and_display_service_by_iD(this.head, iD);
     }
     private int search_and_display_service_by_iD ( Service curr, int iD){
-            if ( curr == null)
-            {
-                return -1;
-            }
-            if ( curr.compare(iD) == 0)
-            {
-                curr.display();
-                return 1;
-            }
-            return search_and_display_service_by_iD(curr.goNext(), iD);
+        if ( curr == null)
+        {
+            return -1;
+        }
+        if ( curr.compare(iD) == 0)
+        {
+            curr.display();
+            return 1;
+        }
+        return search_and_display_service_by_iD(curr.goNext(), iD);
     }
 
     // This function will search and update the specific iD
@@ -255,23 +254,23 @@ public class List_service {
     // Return 1 means success found and update
     // Return -1 means service is not found
     public int search_and_update_service_by_iD ( int iD) {
-            if ( this.head == null || iD == 0 )
-            {
-                return -2;
-            }
-            return search_and_update_service_by_iD(this.head, iD);
+        if ( this.head == null || iD == 0 )
+        {
+            return -2;
+        }
+        return search_and_update_service_by_iD(this.head, iD);
     }
     private int search_and_update_service_by_iD ( Service curr, int iD){
-            if (curr == null)
-            {
-                return -1;
-            }
-            if ( curr.compare(iD) == 0 )
-            {
-                curr.update();
-                return 1;
-            }
-            return search_and_update_service_by_iD(curr.goNext(), iD);
+        if (curr == null)
+        {
+            return -1;
+        }
+        if ( curr.compare(iD) == 0 )
+        {
+            curr.update();
+            return 1;
+        }
+        return search_and_update_service_by_iD(curr.goNext(), iD);
     }
 
     // Delete all services function
@@ -350,8 +349,8 @@ public class List_service {
     // Return 0 - SUCCESS
     // Return -1 if txt_name is null or the current list is empty
     // Return the number of Services that has been written in the text file
-    public int write_Text_file (File toWrite){
-        if ( toWrite == null)
+    public int write_Text_file (File newFile){
+        if ( newFile == null)
         {
             return -1;
         }
@@ -359,21 +358,76 @@ public class List_service {
             System.out.println("The list is empty ");
             return -1;
         }
-
-        File newFile = toWrite ;
         return write_Text_file(newFile, this.head);
     }
+
     private int write_Text_file (File newFile, Service curr) {
         if ( curr == null) {
             return 0;
         }
-        // It means it is not success
-        if ( curr.writeToFile(newFile) != 1)
-        {
+
+        if ( curr.writeToFile(newFile) != 1) {
             System.out.println("System occurs errors");
             return -1;
         }
         return write_Text_file(newFile,curr.goNext()) + 1;
+    }
+
+    // Write privider report method
+    // Return -1 means list is empty or not a type
+    // return number of services that have been written
+    public int writeProviderReport(File filename) throws FileNotFoundException{
+        if ( this.head == null){
+            return -1;
+        }
+        if (type != List_Service_Type.all_services_provided_provider){
+            System.out.println("The type of the list cannot be called by this method ");
+            return -1;
+        }
+        return writeProviderReport(filename, this.head, 1);
+    }
+    private int writeProviderReport(File newFile, Service curr, int count) {
+        if (curr == null ){
+            return 0;
+        }
+        try {
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(newFile, true));
+            bWriter.write("\nService " + count + ":\n");
+            bWriter.close();
+            curr.writeReport(newFile);
+        }catch (IOException e){
+            System.out.println("File cannot be opened");
+        }
+        return writeProviderReport(newFile, curr.goNext(), count + 1) + 1;
+    }
+
+
+    // Write Member report
+    // REturn -1 means the list is empty or not a type
+    // Return number of services that have been written
+
+    public int writeMemberReport( File newFile) throws FileNotFoundException {
+        if(this.head == null) {
+            return -1;
+        }
+        if (type != List_Service_Type.all_services_received_customer)
+        {
+            return -1;
+        }
+        return writeMemberReport(newFile, this.head, 1);
+    }
+    private int writeMemberReport( File newFile, Service curr, int count){
+        if ( curr == null)
+            return 0;
+        try {
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(newFile, true));
+            bWriter.write("\nService " + count + ":\n");
+            bWriter.close();
+            curr.writeMemberReport(newFile);
+        }catch (IOException e){
+            System.out.println("File cannot be opened");
+        }
+        return writeMemberReport(newFile, curr.goNext(), count + 1) + 1;
     }
 
 
@@ -381,8 +435,8 @@ public class List_service {
     // Load from text file
     // Return -2 means the text is null
     // Return -1 means the type is not suitable
-    public int load_Services_from_text_file (File toLoad) throws Exception{
-        Scanner text_name = new Scanner(toLoad);
+    public int load_Services_from_text_file (File file) throws Exception{
+        Scanner text_name = new Scanner(file);
         int number_reads = 0 ;
         if ( type == List_Service_Type.all_services_available_provider){
             while (text_name.hasNext()) {
@@ -394,7 +448,7 @@ public class List_service {
                     }
                     if (result == 1)
                     {
-                       ++number_reads;
+                        ++number_reads;
                     }
                     add_service_to_list(newService);
                 }
@@ -432,21 +486,21 @@ public class List_service {
     // Return 0 means not found any
     // Return -1 means List empty
     private int search_and_display_services_in_between_service_date (Service newNode, String x, String y)  throws ParseException{
-            if ( newNode == null)
-            {
-               return 0;
+        if ( newNode == null)
+        {
+            return 0;
+        }
+        ServiceProvided curr = (ServiceProvided) (newNode);
+        try {
+            if (curr.compareByServiceDate(x) == 1 && curr.compareByServiceDate(y) == -1) {
+                curr.display();
+                return search_and_display_services_in_between_service_date(newNode.goNext(), x, y )  + 1;
             }
-            ServiceProvided curr = (ServiceProvided) (newNode);
-            try {
-                if (curr.compareByServiceDate(x) == 1 && curr.compareByServiceDate(y) == -1) {
-                    curr.display();
-                    return search_and_display_services_in_between_service_date(newNode.goNext(), x, y )  + 1;
-                }
 
-            }catch (Exception e){
+        }catch (Exception e){
 
-            }
-                    return search_and_display_services_in_between_service_date(newNode.goNext(),x,y)  ;
+        }
+        return search_and_display_services_in_between_service_date(newNode.goNext(),x,y)  ;
     }
 
     public int search_and_display_services_in_between_service_date ( String date1, String date2) throws ParseException
@@ -508,9 +562,9 @@ public class List_service {
         return search_and_update_services_in_between_service_date(this.head, date1, date2);
     }
     private int search_and_update_services_in_between_service_date ( Service newNode, String x , String y ) {
-       if ( newNode == null) {
-           return 0;
-       }
+        if ( newNode == null) {
+            return 0;
+        }
         ServiceProvided curr = (ServiceProvided) (newNode);
         try {
             if (curr.compareByServiceDate(x) == 1 && curr.compareByServiceDate(y) == -1) {
@@ -519,9 +573,9 @@ public class List_service {
             }
 
         }
-       catch (Exception e){
+        catch (Exception e){
 
-       }
+        }
         return search_and_update_services_in_between_service_date(newNode.goNext(), x, y) ;
     }
 
@@ -566,11 +620,11 @@ public class List_service {
         ServiceProvided newNode = (ServiceProvided) curr;
         try {
             if (newNode.compareByServiceDate(x) == 1) {
-                    newNode.display();
-                    return search_and_display_all_services_after_one_service_date(curr.goNext(), x) + 1;
+                newNode.display();
+                return search_and_display_all_services_after_one_service_date(curr.goNext(), x) + 1;
             }
         }catch (Exception e){}
-                    return search_and_display_all_services_after_one_service_date(curr.goNext(), x) ;
+        return search_and_display_all_services_after_one_service_date(curr.goNext(), x) ;
     }
 
 
@@ -583,10 +637,10 @@ public class List_service {
     // Return 0 means not found any
     // Return -1 means List empty
     public int search_and_update_all_services_after_one_service_date ( String date) {
-          if (type == List_Service_Type.all_services_available_provider){
+        if (type == List_Service_Type.all_services_available_provider){
             return -3;
         }
-         if ( this.head == null) {
+        if ( this.head == null) {
             return -1;
         }
         if( date == null){
@@ -596,14 +650,14 @@ public class List_service {
     }
 
     private int search_and_update_all_services_after_one_service_date ( Service curr, String x){
-         if ( curr == null) {
+        if ( curr == null) {
             return 0;
         }
         ServiceProvided newNode = (ServiceProvided) curr;
         try {
             if (newNode.compareByServiceDate(x) == 1) {
                 newNode.update();
-                    return search_and_update_all_services_after_one_service_date(curr.goNext(), x) + 1;
+                return search_and_update_all_services_after_one_service_date(curr.goNext(), x) + 1;
             }
         }catch (Exception e){}
         return search_and_update_all_services_after_one_service_date(curr.goNext(), x);
@@ -613,10 +667,10 @@ public class List_service {
 
     // this function will be used to check whether or not the service is already available in the list
     public boolean check_service_exist_in_list ( int iD){
-            if(this.head == null) {
-                return false;
-            }
-            return check_service_exist_in_list(this.head, iD);
+        if(this.head == null) {
+            return false;
+        }
+        return check_service_exist_in_list(this.head, iD);
     }
     private boolean check_service_exist_in_list ( Service curr, int iD){
         if ( curr == null){
@@ -647,10 +701,10 @@ public class List_service {
         // Deallocate all memory
         delete_all_services_list();
         // Meaning it copies it self
-            if (this.compare_two_list(to_copy) == true )
-            {
-                return 1;
-            }
+        if (this.compare_two_list(to_copy) == true )
+        {
+            return 1;
+        }
         this.type = to_copy.type;
         // Catch
         this.head = copy_list(to_copy.head,this.tail, this.head, to_copy.type);
@@ -658,20 +712,20 @@ public class List_service {
     }
 
 
-       // Assume that the original list is sorted, we can just simply add to the end
+    // Assume that the original list is sorted, we can just simply add to the end
     private Service copy_list ( Service src, Service dst_tail,Service dst, List_Service_Type type){
         if (src == null)
         {
             return dst;
         }
-            if (dst == null) {
-                dst = src;
-                dst_tail = dst;
-            } else if (dst != null) {
-                dst_tail.setNext(src);
-                dst_tail = src;
+        if (dst == null) {
+            dst = src;
+            dst_tail = dst;
+        } else if (dst != null) {
+            dst_tail.setNext(src);
+            dst_tail = src;
 
-            }
+        }
         return copy_list(src.goNext(),dst_tail, dst, type);
     }
 
@@ -679,29 +733,29 @@ public class List_service {
     public boolean compare_two_list ( List_service to_copy)
     {
         // Check if two type is different
-            if ( this.type != to_copy.type) {
-                return false;
-            }
-            // if the number of the list is not the same
-            if ( number_of_services_in_the_list(to_copy.head) != number_of_services_in_the_list(this.head))
-            {
-                return false;
-            }
-            // Check if the source list is empty
-            if ( to_copy.head == null)  {
-                return false;
-            }
-            return compare_two_list(to_copy.head, this.head);
+        if ( this.type != to_copy.type) {
+            return false;
+        }
+        // if the number of the list is not the same
+        if ( number_of_services_in_the_list(to_copy.head) != number_of_services_in_the_list(this.head))
+        {
+            return false;
+        }
+        // Check if the source list is empty
+        if ( to_copy.head == null)  {
+            return false;
+        }
+        return compare_two_list(to_copy.head, this.head);
     }
     private boolean compare_two_list ( Service src, Service dst){
-            if ( src == null || dst == null) {
-                return true;
-            }
-            if ( src.compare(dst.idNum) != 0)
-            {
-                return false;
-            }
-            return compare_two_list(src.goNext(), dst.goNext());
+        if ( src == null || dst == null) {
+            return true;
+        }
+        if ( src.compare(dst.idNum) != 0)
+        {
+            return false;
+        }
+        return compare_two_list(src.goNext(), dst.goNext());
     }
     public static void main(String[] args) {
 
