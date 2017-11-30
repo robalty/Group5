@@ -11,10 +11,10 @@ public class Main {
     private static File[] dirLoad = new File[4];
     private static Database[] data = null;
     public static void main(String[] args) {
-        dirLoad[0] = new File(".\\data_files\\serviceDB.txt");
-        dirLoad[1] = new File(".\\data_files\\providerDB.txt");
-        dirLoad[2] = new File(".\\data_files\\employeeDB.txt");
-        dirLoad[3] = new File(".\\data_files\\memberDB.txt");
+        dirLoad[0] = new File("./data_files/serviceDB.txt");
+        dirLoad[1] = new File("./data_files/providerDB.txt");
+        dirLoad[2] = new File("./data_files/employeeDB.txt");
+        dirLoad[3] = new File("./data_files/memberDB.txt");
         data = populate(dirLoad);
         System.out.println("Welcome to the CDPS!\n");
         Profile curUser = null;
