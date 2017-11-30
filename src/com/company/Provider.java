@@ -7,6 +7,8 @@ import java.text.DecimalFormat;
 import java.util.Scanner;
 
 /* *********************************************************************************************************************
+Hannah Femling
+
 The Provider class (derived from the Person class) is a node in the tree of ChocAn providers, and contains the fields
 and methods specific to an provider.
 ********************************************************************************************************************* */

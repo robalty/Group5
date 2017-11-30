@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 /* *********************************************************************************************************************
+Hannah Femling
+
 The Employee class (derived from the Person class) is a node in the tree of ChocAn employees, and contains the fields
 and methods specific to an employee.
 ********************************************************************************************************************* */
