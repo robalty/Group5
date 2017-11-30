@@ -1,5 +1,7 @@
 package com.company;
 import java.io.File;
+import java.util.*;
+import java.text.*;
 
 /**
  * Created by Ollie on 11/10/17.
@@ -24,24 +26,37 @@ public class Database extends Tree {
 
     //Wrapper function.
     //Writes separate EFT reports for all Entries in the Tree. Also displays each node in-order. This is intended for mass
-    //reporting at the end of the week. Client can specify the directory that the report will be written to.
-    public int writeSeparateEntryReports(String directoryName) { return writeSeparateEntryReports(this.root, directoryName); }
+    //reporting at the end of the week. The current date is needed for naming the individual files.
+    public int writeSeparateEntryReports(String directoryName) {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("_MMddyyyy"); //Format date with an underscore delimiter.
+        return writeSeparateEntryReports(this.root, directoryName, dateFormat.format(currentDate));
+    }
 
-    protected int writeSeparateEntryReports(Entry current, String directoryName) {
+    protected int writeSeparateEntryReports(Entry current, String directoryName, String currentDate) {
         int count;
+        String fileName = "";
 
+        //If there is no Entry to read, return
         if(current == null)
             return 0;
 
-        //ROLAND: Here's where you insert the naming convention that you would prefer
-        String fileName = directoryName;
+        //Add the path to the file name
+        if(directoryName != null) fileName = directoryName;
+
+        //The format for the file name is "lastNamefirstName_currentDate.txt"
+        fileName += current.lastName + current.firstName + currentDate + ".txt";
+
+        //Create new file for each Entry
         File reportName = new File(fileName);
 
+        //Traverse, display, and write to the report
         count = writeSeparateEntryReports(current.goLeft(), directoryName);
         current.display();
         current.writeReport(reportName);
         count += writeSeparateEntryReports(current.goRight(), directoryName);
 
+        //Increment total number of Entries written
         return ++count;
     }
 
@@ -53,8 +68,8 @@ public class Database extends Tree {
 
         //Display totals for the traversal
         System.out.println("SUMMARY\nNumber of Providers: " + count
-                            + "\nNumber of Services Provided: " + total.servicesCount
-                            + "\nTotal transfer amount:" + total.transferTotal);
+                + "\nNumber of Services Provided: " + total.servicesCount
+                + "\nTotal transfer amount:" + total.transferTotal);
 
         return count;
     }
@@ -73,7 +88,7 @@ public class Database extends Tree {
         //Write the report out
         current.writeReport(combinedReport);
 
-        //Increment the total for the EFT object. Hannah gave me these as interfaces.
+        //Increment the total for the EFT object.
         total.servicesCount = current.getNumberOfServices();
         total.transferTotal = current.getTotalFee();
 
