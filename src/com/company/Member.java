@@ -11,11 +11,13 @@ and methods specific to an member.
 ********************************************************************************************************************* */
 
 public class Member extends Person {
-    protected List_service serviceProvidedList;
+    protected List_service serviceProvidedList; // list of services that have been provided to the member
+    protected boolean isCurrentMember; //true if the membership is active, false if the membership is suspended
 
     // Constructor with arguments
-    public Member(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip) throws Exception {
+    public Member(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, boolean memberStatus) throws Exception {
         super(idNum, firstName, lastName, streetAddress, city, state, zip);
+        this.isCurrentMember = memberStatus;
         this.serviceProvidedList = new List_service(List_Service_Type.all_services_provided_provider);
     }
 
@@ -23,6 +25,7 @@ public class Member extends Person {
     public Member() {
         super();
         this.serviceProvidedList = new List_service(List_Service_Type.all_services_provided_provider);
+        this.isCurrentMember = true;
     }
 
     // Allows user to change the name or address of the member
@@ -30,6 +33,14 @@ public class Member extends Person {
     public Member update() {
         super.update();
         return this;
+    }
+
+    public boolean isCurrent() {
+        return this.isCurrentMember;
+    }
+
+    public void toggleStatus() {
+        this.isCurrentMember = !this.isCurrentMember;
     }
 
     // Writes the personal information of the member to the File object passed in and
@@ -55,6 +66,11 @@ public class Member extends Person {
             result += this.serviceProvidedList.write_Text_file(serviceProvidedFile);
             try {
                 aFileWriter = new FileWriter(aFile, true);
+
+                if (this.isCurrentMember)
+                    aFileWriter.append("true;");
+                else
+                    aFileWriter.append("false;");
 
                 aFileWriter.append(serviceProvidedFilename);
                 aFileWriter.append(";\n");
@@ -88,15 +104,26 @@ public class Member extends Person {
         int result = 0;
         String serviceProvidedFilename;
         File serviceProvidedFile;
+        String tempStatus;  // read status as a String from file before converting to a boolean
 
         fileInput.useDelimiter(";");
         result = super.loadFromFile(fileInput);
         if (result==1) {
             try {
-                serviceProvidedFilename = fileInput.next();
-                serviceProvidedFile = new File("data_files\\list_of_services\\member\\" + serviceProvidedFilename);
-                if (serviceProvidedFile.length() > 0)
-                    result += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+                tempStatus = fileInput.next();
+                if (tempStatus.compareToIgnoreCase("true")==0)
+                    this.isCurrentMember = true;
+                else if (tempStatus.compareToIgnoreCase("false")==0)
+                    this.isCurrentMember = false;
+                else
+                    result = -1;
+
+                if (result != -1) {
+                    serviceProvidedFilename = fileInput.next();
+                    serviceProvidedFile = new File("data_files\\list_of_services\\member\\" + serviceProvidedFilename);
+                    if (serviceProvidedFile.length() > 0)
+                        result += this.serviceProvidedList.load_Services_from_text_file(serviceProvidedFile);
+                }
             }
             catch (Exception e) {
                 result = -1;
@@ -123,6 +150,10 @@ public class Member extends Person {
     public void display() {
         super.display();
         if (this.serviceProvidedList != null) {
+            if (this.isCurrentMember)
+                System.out.println("Member Status: Valid");
+            else
+                System.out.println("Member Status: Suspended");
             System.out.println("Services provided:");
             this.serviceProvidedList.display_all_list_services_();
         }

@@ -11,7 +11,7 @@ and methods specific to an employee.
 ********************************************************************************************************************* */
 
 public class Employee extends Person {
-    protected char jobTitleCode;
+    protected char jobTitleCode; //'M' for manager or 'O' for operator
 
     // Constructor with arguments
     public Employee(int idNum, String firstName, String lastName, String streetAddress, String city, String state, int zip, char jobTitleCode) throws Exception {
